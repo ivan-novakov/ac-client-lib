@@ -1,0 +1,13 @@
+AC PHP API Library
+
+Author: Ivan Novakov <ivan.novakov@debug.cz>
+Copyright: (c) 2009 CESNET, z. s. p. o. (http://www.ces.net/)
+Licence: LGPL (http://www.gnu.org/licenses/lgpl.txt)
+
+Requirements:
+  - Zend Framework 1.5+, http://framework.zend.com/
+
+For quick reference see 'example.php'.
+
+
+    
