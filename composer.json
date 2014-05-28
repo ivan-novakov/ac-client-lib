@@ -1,0 +1,15 @@
+{
+    "name" : "ivan-novakov/ac-client-lib",
+    "description" : "Client library for the Adobe Connect remote API",
+
+    "require" : {
+        "php" : ">=5.3.3",
+        "zendframework/zendframework1" : "~1.12"
+    },
+
+    "autoload" : {
+        "psr-0" : {
+            "AcApi_" : "src/"
+        }
+    }
+}

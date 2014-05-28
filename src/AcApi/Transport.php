@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * This file is part of the AC PHP API Library.    
  *
@@ -27,22 +29,23 @@
  */
 class AcApi_Transport extends AcApi_Base
 {
+
     /**
      * Adapter type to use.
      *
      * @var string
      */
     protected $_adapterType = '';
-    
+
     /**
      * Adapter options.
      *
      * @var unknown_type
      */
-    protected $_adapterOptions = array(
-        
-    );
+    protected $_adapterOptions = array();
+
     
+
     /**
      * Adapter object.
      *
@@ -57,7 +60,7 @@ class AcApi_Transport extends AcApi_Base
      * @param string $adapterType
      * @param array $adapterOptions
      */
-    public function __construct ($adapterType, Array $adapterOptions = array())
+    public function __construct($adapterType, Array $adapterOptions = array())
     {
         $this->_adapterType = $adapterType;
         $this->_adapterOptions = $adapterOptions;
@@ -69,11 +72,14 @@ class AcApi_Transport extends AcApi_Base
      *
      * @return AcApi_Transport_Adapter_Abstract
      */
-    protected function _initAdapter ()
+    protected function _initAdapter()
     {
         $adapterClass = 'AcApi_Transport_Adapter_' . ucfirst($this->_adapterType);
+        if (! class_exists($adapterClass)) {
+            throw new AcApi_Transport_Exception(sprintf("Non-existent transport adapter class '%s'", $adapterClass));
+        }
+        
         try {
-            Zend_Loader::loadClass($adapterClass);
             $adapter = new $adapterClass($this->_adapterOptions);
         } catch (Exception $e) {
             throw new AcApi_Transport_Exception(sprintf("Error initializing adapter: %s", $e->getMessage()));
@@ -88,7 +94,7 @@ class AcApi_Transport extends AcApi_Base
      *
      * @return AcApi_Transport_Adapter_Abstract
      */
-    public function getAdapter ()
+    public function getAdapter()
     {
         if (! ($this->_adapter instanceof AcApi_Transport_Adapter_Abstract)) {
             $this->_adapter = $this->_initAdapter();
@@ -104,12 +110,12 @@ class AcApi_Transport extends AcApi_Base
      * @param AcApi_Request $request
      * @return AcApi_Response
      */
-    public function sendRequest (AcApi_Request $request)
+    public function sendRequest(AcApi_Request $request)
     {
         return $this->getAdapter()->sendRequest($request);
     }
-    
-    
+
+
     /**
      * Returns the current session string (through the adapter).
      *
@@ -117,7 +123,6 @@ class AcApi_Transport extends AcApi_Base
      */
     public function getSessionString()
     {
-    	return $this->getAdapter()->getSessionString();
+        return $this->getAdapter()->getSessionString();
     }
-
 }

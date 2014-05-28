@@ -1,0 +1,16 @@
+<?php
+// Client configuration
+$acConfig = array(
+    // Type of transport to be used
+    'type' => 'xml',
+    // The URL of the remote AC API
+    'uri' => 'https://aconnect.example.org/api/xml',
+    // The user for the connection
+    'username' => 'acproxyuser',
+    // The user's password
+    'password' => 'acproxypassword',
+    // The name of the cookie holding the current session
+    'cookie' => 'BREEZESESSION',
+    // Set logging to standard output, could be a file too
+    'log' => 'php://output'
+);
