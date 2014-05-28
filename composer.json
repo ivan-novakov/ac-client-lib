@@ -1,6 +1,7 @@
 {
     "name" : "ivan-novakov/ac-client-lib",
     "description" : "Client library for the Adobe Connect remote API",
+    "license" : "LGPL",
 
     "require" : {
         "php" : ">=5.3.3",
