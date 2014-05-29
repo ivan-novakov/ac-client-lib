@@ -1,33 +1,13 @@
 <?php
-/**
- * This file is part of the AC PHP API Library.    
- *
- * The AC PHP API Library is free software: you can redistribute it and/or modify    
- * it under the terms of the GNU Lesser General Public License as published by    
- * the Free Software Foundation, either version 3 of the License, or    
- * (at your option) any later version.    
- * 
- * The AC PHP API Library is distributed in the hope that it will be useful,    
- * but WITHOUT ANY WARRANTY; without even the implied warranty of    
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
- * GNU Lesser General Public License for more details.    
- * 
- * You should have received a copy of the GNU Lesser General Public License    
- * along with the AC PHP API Library.  If not, see <http://www.gnu.org/licenses/>. 
- * 
- * @author Ivan Novakov <ivan.novakov@debug.cz>
- * @copyright Copyright (c) 2009 CESNET, z. s. p. o. (http://www.ces.net/)
- * @license LGPL (http://www.gnu.org/licenses/lgpl.txt)
- * 
- */
+
 
 /**
  * XML transport adapter implementation 
  * - reads and handles XML responses from the AC server through HTTP communication.
- *
  */
 class AcApi_Transport_Adapter_Xml extends AcApi_Transport_Adapter_Abstract implements AcApi_Transport_Adapter_Interface
 {
+
     /**
      * The HTTP client object
      *
@@ -40,7 +20,7 @@ class AcApi_Transport_Adapter_Xml extends AcApi_Transport_Adapter_Abstract imple
      * Reserved for additional initializations.
      *
      */
-    protected function _init ()
+    protected function _init()
     {}
 
 
@@ -49,7 +29,7 @@ class AcApi_Transport_Adapter_Xml extends AcApi_Transport_Adapter_Abstract imple
      *
      * @return Zend_Http_Client
      */
-    public function getClient ()
+    public function getClient()
     {
         if (! ($this->_client instanceof Zend_Http_Client)) {
             $this->_client = $this->_initHttpClient();
@@ -65,7 +45,7 @@ class AcApi_Transport_Adapter_Xml extends AcApi_Transport_Adapter_Abstract imple
      * @param AcApi_Request $request
      * @return mixed
      */
-    public function sendRequest (AcApi_Request $request)
+    public function sendRequest(AcApi_Request $request)
     {
         $xml = $this->_buildRequest($request);
         
@@ -86,30 +66,21 @@ class AcApi_Transport_Adapter_Xml extends AcApi_Transport_Adapter_Abstract imple
         $cookieName = $this->getOption('cookie_name');
         $uriParts = parse_url($this->getOption('server_uri'));
         
-        $cookieDomain = $uriParts['scheme'] . '://' . $uriParts['host']; 
+        $cookieDomain = $uriParts['scheme'] . '://' . $uriParts['host'];
         $cookie = $httpClient->getCookieJar()->getCookie($cookieDomain, $cookieName);
         $responseMetadata = array(
-        	'cookie' => $cookie 
+            'cookie' => $cookie
         );
         return $this->_createResponse($httpResponse->getBody(), $responseMetadata);
     }
-    
-    
-    /*
-    public function getSessionString()
-    {
-    	$client = $this->getClient();
-    	//_log($client->getCookiejar());
-    }
-	*/
 
-    
+
     /**
      * Initializes the HTTP client object.
      *
      * @return Zend_Http_Client
      */
-    protected function _initHttpClient ()
+    protected function _initHttpClient()
     {
         $serverUri = $this->getOption('server_uri');
         if (! $serverUri) {
@@ -125,5 +96,4 @@ class AcApi_Transport_Adapter_Xml extends AcApi_Transport_Adapter_Abstract imple
         
         return $client;
     }
-
 }

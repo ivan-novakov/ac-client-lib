@@ -1,39 +1,19 @@
 <?php
-/**
- * This file is part of the AC PHP API Library.    
- *
- * The AC PHP API Library is free software: you can redistribute it and/or modify    
- * it under the terms of the GNU Lesser General Public License as published by    
- * the Free Software Foundation, either version 3 of the License, or    
- * (at your option) any later version.    
- * 
- * The AC PHP API Library is distributed in the hope that it will be useful,    
- * but WITHOUT ANY WARRANTY; without even the implied warranty of    
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
- * GNU Lesser General Public License for more details.    
- * 
- * You should have received a copy of the GNU Lesser General Public License    
- * along with the AC PHP API Library.  If not, see <http://www.gnu.org/licenses/>. 
- * 
- * @author Ivan Novakov <ivan.novakov@debug.cz>
- * @copyright Copyright (c) 2009 CESNET, z. s. p. o. (http://www.ces.net/)
- * @license LGPL (http://www.gnu.org/licenses/lgpl.txt)
- * 
- */
+
 
 /**
  * Provides basic API to the AC server, handles requests, remote calls and returns responses.
- *
  */
 class AcApi_Client extends AcApi_Base
 {
+
     /**
      * The transport object used for communication.
      *
      * @var AcApi_Transport
      */
     protected $_transport = NULL;
-    
+
     /**
      * Stores the last request.
      *
@@ -48,7 +28,7 @@ class AcApi_Client extends AcApi_Base
      *
      * @param array $options
      */
-    public function __construct (Array $options)
+    public function __construct(Array $options)
     {
         $this->setOptions($options);
         
@@ -61,7 +41,7 @@ class AcApi_Client extends AcApi_Base
      *
      * @return AcApi_Transport
      */
-    public function getTransport ()
+    public function getTransport()
     {
         if (! ($this->_transport instanceof AcApi_Transport)) {
             $this->_transport = $this->_initTransport();
@@ -76,7 +56,7 @@ class AcApi_Client extends AcApi_Base
      *
      * @return AcApi_Request
      */
-    public function getLastRequest ()
+    public function getLastRequest()
     {
         return $this->_lastRequest;
     }
@@ -87,7 +67,7 @@ class AcApi_Client extends AcApi_Base
      *
      * @return AcApi_Transport
      */
-    protected function _initTransport ()
+    protected function _initTransport()
     {
         $type = $this->getOption('type');
         if (! $type) {
@@ -100,7 +80,7 @@ class AcApi_Client extends AcApi_Base
         }
         
         $transport = new AcApi_Transport($type, array(
-            'server_uri' => $uri, 
+            'server_uri' => $uri,
             'cookie_name' => $this->getOption('cookie')
         ));
         
@@ -116,7 +96,7 @@ class AcApi_Client extends AcApi_Base
      * @param string $password
      * @return mixed
      */
-    public function login ($username = '', $password = '')
+    public function login($username = '', $password = '')
     {
         if (! $username) {
             $username = $this->getOption('username');
@@ -127,7 +107,7 @@ class AcApi_Client extends AcApi_Base
         }
         
         return $this->_apiCall('login', array(
-            'login' => $username, 
+            'login' => $username,
             'password' => $password
         ));
     }
@@ -138,7 +118,7 @@ class AcApi_Client extends AcApi_Base
      *
      * @return AcApi_Response
      */
-    public function logout ()
+    public function logout()
     {
         return $this->_apiCall('logout');
     }
@@ -151,7 +131,7 @@ class AcApi_Client extends AcApi_Base
      * @param array $params
      * @return mixed
      */
-    public function apiCall ($action, Array $params = array())
+    public function apiCall($action, Array $params = array())
     {
         return $this->_apiCall($action, $params);
     }
@@ -164,9 +144,8 @@ class AcApi_Client extends AcApi_Base
      * @param array $params Array of parameters for the API call.
      * @return mixed
      */
-    protected function _apiCall ($action, Array $params = array())
+    protected function _apiCall($action, Array $params = array())
     {
-        
         $transport = $this->getTransport();
         if (! is_array($params)) {
             $request = new AcApi_Request($action);
@@ -197,7 +176,7 @@ class AcApi_Client extends AcApi_Base
      * @param unknown_type $args
      * @return unknown
      */
-    public function __call ($method, $args)
+    public function __call($method, $args)
     {
         if (! preg_match('/^api_(.+)$/', $method, $matches)) {
             throw new AcApi_Exception(sprintf("Unknown method '%s'.", $method));
@@ -211,9 +190,9 @@ class AcApi_Client extends AcApi_Base
         if (is_array($args) && isset($args[0])) {
             $params = $args[0];
         } else {
-            $params = array()
+            $params = array();
 
-            ;
+            
         }
         
         if (! empty($params) && ! is_array($params)) {
@@ -232,7 +211,7 @@ class AcApi_Client extends AcApi_Base
      * @param string $value
      * @return string
      */
-    protected function _camelcaseToDash ($value)
+    protected function _camelcaseToDash($value)
     {
         if (! $splitString = preg_replace('/(?!^)[[:upper:]]/', ' \0', $value)) {
             return NULL;
@@ -247,9 +226,8 @@ class AcApi_Client extends AcApi_Base
      *
      * @param mixed $value
      */
-    protected function _debug ($value)
+    protected function _debug($value)
     {
         $this->_log->debug(print_r($value, true));
     }
-
 }
